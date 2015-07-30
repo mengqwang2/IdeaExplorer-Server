@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "_forms.html" as forms %}
+
+{% block page_header %}
+  <div class="page-header">
+    <h1>{{ idea.title }}</h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {{ idea.description }}
+  <hr>
+  <p>Created Time: {{ idea.updated_date }}</p>
+  <hr>
+  <h2><a href="{{ url_for('posts.comment', slug=idea.id) }}">Comments</a></h2>
+  {% if post.comments %}
+    {% for comment in post.comments %}
+      <p>{{ comment.content }}</p>
+      <p><strong>{{ comment.user.badgeid }}</strong> <small>on {{ comment.created_at.strftime('%H:%M %Y-%m-%d') }}</small></p>
+    {% endfor %}
+  {% endif %}
+
+  <h2><a href="{{ url_for('posts.rate', slug=idea.id) }}">Rates</a></h2>
+  {% if post.rate %}
+    {% for r in post.rate %}
+      <p>{{ r.rating }}</p>
+      <p><strong>{{ r.user.badgeid }}</strong> <small>on {{ r.create_at.strftime('%H:%M %Y-%m-%d') }}</small></p>
+    {% endfor %}
+  {% endif %}
+
+{% endblock %}

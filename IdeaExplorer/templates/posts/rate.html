@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "_forms.html" as forms %}
+
+{% block content %}
+<h2>Rate the document</h2>
+<form action="" method="post">
+  {{ forms.render(form) }}
+  <div class="actions">
+    <input type="submit" class="btn primary" value="Rate">
+  </div>
+</form>
+
+{% endblock %}

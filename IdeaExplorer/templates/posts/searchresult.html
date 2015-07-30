@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "_forms.html" as forms %}
+
+{% block content %}
+    {% for idea in ideas %}
+     {%  for d in docList %}
+     	{% if idea.id == d %}
+
+    		<h5><a href="{{ url_for('posts.detail', slug=idea.id) }}">{{ idea.id }}</a></h5>
+    		<h5>{{idea.title}}</h5>
+    		<hr/>
+    	{% endif %}
+
+      {% endfor %}
+  {% endfor %}
+{% endblock %}

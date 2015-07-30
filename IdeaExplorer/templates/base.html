@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My Tumblelog</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>.content {padding-top: 80px;}</style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <a class="navbar-brand" href="#">IdeaExplorer</a>
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/list">{{current_user.email}}</a>
+        </li>
+        {% if current_user.is_authenticated() %}
+        <li>
+          <a href="/list">Ideas</a>
+        </li>
+        <li>
+          <a href="/search">Search</a>
+        </li>
+        <li>
+          <a href="/interest">Interest</a>
+        </li>
+        <li>
+          <a href="/logout">Logout</a>
+        </li>
+        {% else %}
+        <li><a href="/">Login</a></li>
+        <li><a href="/register">Register</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <div class="container">
+      <div class="content">
+        {% block page_header %}{% endblock %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    {% block js_footer %}{% endblock %}
+  </body>
+</html>

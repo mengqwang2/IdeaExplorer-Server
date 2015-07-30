@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+  <div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <form action="" method="POST" role="form">
+        <legend>Tell more what you feel interested in!</legend>
+      
+        <div class="form-group">
+          <label for="">Doc ID:</label>
+          <input type="text" id="doc" name="doc" class="form-control" placeholder="Doc">
+        </div>
+
+        <div class="form-group">
+          <label for="">Keywords:</label>
+          <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Keyword">
+        </div>
+      
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
+
+      <h3>Interest</h3>
+      <p>Docs: {{up.doc}} </p>
+
+      <p>Keywords: {{up.keyword}} </p>
+    </div>
+  </div>
+ 
+{% endblock %}
