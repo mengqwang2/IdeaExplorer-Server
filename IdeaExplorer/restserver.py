@@ -179,11 +179,13 @@ class DetailAPI(Resource):
         data["rating"]=rt
         data["tags"]=dd.getTags()
         data["innovators"]=dd.getInnovator()
-
+        data["id"]=postid
         #Write user preference
         uo=UserProfile.objects.get_or_404(email=email)
-        uo.doc.append(postid)
-        uo.save()
+        docList=uo.doc
+        if postid not in docList:
+            uo.doc.append(postid)
+            uo.save()
 
         return data
 

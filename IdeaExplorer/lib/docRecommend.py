@@ -68,6 +68,8 @@ class DocRecommend():
 
 
 	def doRecommend(self):
+		if len(self.__doclist)==0:
+			return self.__recSet
 		for doc in self.__doclist:
 			search_id1=self.typeMatch(doc)
 			search_id2=self.tagSearch(search_id1,doc)

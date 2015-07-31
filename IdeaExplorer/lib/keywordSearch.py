@@ -72,6 +72,9 @@ class KeywordSearch():
 
 
 	def doSearch(self):
+		docset=set()
+		if len(self.__keyword)==0:
+			return docset
 		topic_id=self.topicSearch()
 		document_id=self.documentSearch(topic_id)
 		d=self.tagSearch()

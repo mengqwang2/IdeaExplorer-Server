@@ -13,6 +13,7 @@ from flask.ext.login import (current_user, login_required, login_user, logout_us
 from jinja2 import TemplateNotFound
 from IdeaExplorer import login_manager,flask_bcrypt
 import logging,keywordSearch,docRecommend
+import category
 
 
 class DocList(MethodView):
@@ -30,25 +31,28 @@ class DocList(MethodView):
 	def doRetrieveDoc(self):
 		d1=set()
 		d2=set()
+		kwList=list()
+		docList=list()
 
 		if self.uo!=None:
 			kwList=self.uo.keyword
 			docList=self.uo.doc
-			ks=keywordSearch.KeywordSearch(kwList,2)
-			d1=ks.doSearch()
-			dr=docRecommend.DocRecommend(docList,5)
-			d2=dr.doRecommend()
+			if len(kwList)==0 and len(docList)==0:
+				cat=category.Category(3)
+				cat.getPopTopics()
+				kwList=cat.getCatList()
+				docList=[]
 
 		if len(self.kwList)>0:
 			kwList=self.kwList
-			ks=keywordSearch.KeywordSearch(kwList,2)
-			d1=ks.doSearch()
-
-
+			
 		if len(self.docList)>0:
 			docList=self.docList
-			dr=docRecommend.DocRecommend(docList,5)
-			d2=dr.doRecommend()
+			
+		ks=keywordSearch.KeywordSearch(kwList,2)
+		d1=ks.doSearch()
+		dr=docRecommend.DocRecommend(docList,5)
+		d2=dr.doRecommend()
 
 		recSet=d1.union(d2)
 		return recSet

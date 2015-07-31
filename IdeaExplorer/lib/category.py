@@ -54,6 +54,9 @@ class Category():
 				self.__catList.add(vo.word)
 
 	def getCatList(self):
+		return self.__catList
+
+	def getCatList(self):
 		self.getPopTags()
 		self.getPopTopics()
 		self.getPopKW()

@@ -3,7 +3,7 @@ from flask.views import MethodView
 from flask.ext.mongoengine.wtf import model_form
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 from jinja2 import TemplateNotFound
-from IdeaExplorer import login_manager,flask_bcrypt
+from IdeaExplorer import login_manager,flask_bcrypt,flask_mail
 import forms
 from hashlib import md5
 import sys
@@ -14,6 +14,7 @@ from models import *
 import DBSim,DBGamma,DBLambda,DBVocab
 import category, docRecommend, keywordSearch, category
 from User import Users
+from flask.ext.mail import Mail, Message
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 

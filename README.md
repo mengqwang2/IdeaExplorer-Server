@@ -1,6 +1,6 @@
 # IdeaExplorer-Server
 
-#Installation Guide
+# Server Installation
 1. Configure include path:
 find </microblog/IdeaExplorer-Server> -type f -exec sed -i -e 's|<Users/mengqwang/Documents/IdeaExplorer/Idea-Server>|<microblog/IdeaExplorer-Server>|g' {} \;
 
