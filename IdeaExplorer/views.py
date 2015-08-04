@@ -16,6 +16,7 @@ import category, docRecommend, keywordSearch, category
 from User import Users
 from flask.ext.mail import Mail, Message
 import ideaParse
+import searchFilter
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 
@@ -253,6 +254,9 @@ class LoginView(MethodView):
             vocObj.save()
             ind=ind+1
         """
+        #dlist=[2015003020,2015003021,2015002673]
+        #sf=searchFilter.Filter("6months",dlist)
+        #sf.doFilter()
 
         return render_template("posts/login.html")
 

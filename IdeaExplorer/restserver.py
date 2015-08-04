@@ -10,7 +10,7 @@ import sys
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
-import register,login,docList,docDetail,rate,comment,docRecommend,category,sorter
+import register,login,docList,docDetail,rate,comment,docRecommend,category,sorter,searchFilter
 from models import *
 from IdeaExplorer import cache
 from flask import current_app, flash, Blueprint, request, redirect, render_template, url_for
@@ -241,14 +241,18 @@ class QueryAPI(Resource):
         dlist=dl.doRetrieveDoc()
 
         #filter
+        sf=searchFilter.Filter(filt,dlist)
+        dlist=sf.doFilter()
+        #print dlist
+
 
         #sort
         sortObj=sorter.Sorter(criteria,dlist)
         sortObj.doSort()
         dlist=sortObj.getList()
 
- 
-
+        print dlist
+        
         data=list()
         
         for d in dlist:
@@ -265,11 +269,10 @@ class QueryAPI(Resource):
             data.append(d_detail)
         return data
 
-    def get(self, queries, sind, capacity, sorter):
+    def get(self, queries, sind, capacity, sorter,filt):
         print "QueryAPI"
         kwList=queries.split("&")
-        data=self.retrieveIdeaList(kwList,sorter,"all")
-
+        data=self.retrieveIdeaList(kwList,sorter,filt)
 
         ideasDict={}
 
@@ -444,7 +447,7 @@ api.add_resource(SimilarAPI, '/api/ideas/relevant/<int:postid>')
 api.add_resource(CategoryAPI, '/api/category')
 api.add_resource(UserAuthAPI, '/api/login')
 api.add_resource(PasswordRecoveryAPI, '/api/login/forget')
-api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>&sort=<string:sorter>')
+api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>&sort=<string:sorter>&filt=<string:filt>')
 api.add_resource(UserRegAPI, '/api/reg')
 api.add_resource(CommentGetAPI, '/api/ideas/comment/<int:postid>')
 api.add_resource(CommentPostAPI, '/api/ideas/comment')
