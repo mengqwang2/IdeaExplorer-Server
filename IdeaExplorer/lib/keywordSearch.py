@@ -60,23 +60,27 @@ class KeywordSearch():
 		return topicSet
 
 	def documentSearch(self,topic_set):
-		document_id = set()
+		document_id = list()
 		for topic_id in topic_set:
 			gammaObj=GammaTD.objects.get_or_404(topicid=topic_id)
 			gamObj=gammaObj.gam
 			gamObj_sorted=sorted(gamObj, key=lambda k: k['gamma'],reverse=True)
 			
 			for i in range(0,self.__K):
-				document_id.add(gamObj_sorted[i].docid)
+				document_id.append(gamObj_sorted[i].docid)
 		return document_id
 
 
 	def doSearch(self):
-		docset=set()
+		docList=list()
 		if len(self.__keyword)==0:
-			return docset
+			return docList
 		topic_id=self.topicSearch()
 		document_id=self.documentSearch(topic_id)
 		d=self.tagSearch()
-		docset=d.union(document_id)
-		return docset
+		for ele in d:
+			docList.append(ele)
+		for ele in document_id:
+			if ele not in docList:
+				docList.append(ele)
+		return docList

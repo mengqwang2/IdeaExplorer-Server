@@ -21,12 +21,12 @@ class Comment():
 	def commentGet(self):
 		comList=[]
 		postAll=UserPost.objects.all()
-		fd=0
+		
 		for p in postAll:
 			if p.docid==self.postid:
 				postObj=UserPost.objects.get_or_404(docid=self.postid)
-				fd=1
-		if fd==0:
+				break
+		else:
 			return comList
 
 		for c in postObj.comments:
@@ -55,7 +55,7 @@ class Comment():
 			up.docid=self.postid
 			up.avgrate=0
 			up.slug=str(self.postid)
-			up.comments=com
+			up.comments.append(com)
 			up.save()
 			return "Comment successfully!"
 		except:

@@ -27,3 +27,8 @@ class Login(MethodView):
 		if user and self.password==user.password and user.is_active():
 			return "Login successfully"
 		return "Login failed"
+
+	def getName(self):
+		userObj=UserProfile.objects.get_or_404(email=self.email)
+		name=userObj.name
+		return name

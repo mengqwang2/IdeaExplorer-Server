@@ -15,6 +15,7 @@ from flask.ext.login import (current_user, login_required, login_user, logout_us
 from jinja2 import TemplateNotFound
 from IdeaExplorer import login_manager,flask_bcrypt
 import logging
+from collections import OrderedDict
 
 class DocRecommend():
 	def __init__(self,docList,k):
@@ -64,8 +65,6 @@ class DocRecommend():
 		else:
 			for ele in simList_sorted:
 				self.__recSet.add(ele['docid'])
-
-
 
 	def doRecommend(self):
 		if len(self.__doclist)==0:

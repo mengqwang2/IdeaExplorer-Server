@@ -45,9 +45,11 @@ class Rate():
 		for up in upObj:
 			if(up.docid==self.postid):
 				for rateObj in up.rate:
-					print rateObj.user.email
 					if (rateObj.user.email==self.email):
 						rateObj.rating=rating
+						break
+				else:
+					up.rate.append(rt)
 				allRate=[r.rating for r in up.rate]
 				avgRate=reduce(lambda x, y: x + y, allRate) / len(allRate)
 				up.avgrate=avgRate

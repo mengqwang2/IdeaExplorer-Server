@@ -15,6 +15,7 @@ import DBSim,DBGamma,DBLambda,DBVocab
 import category, docRecommend, keywordSearch, category
 from User import Users
 from flask.ext.mail import Mail, Message
+import ideaParse
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 
@@ -208,9 +209,6 @@ class LoginView(MethodView):
             ld.topicid=k
             ld.lam=v
             ld.save()
-
-        
-
         
         gammaObj=Gamma.objects.all()
         #print gammaObj

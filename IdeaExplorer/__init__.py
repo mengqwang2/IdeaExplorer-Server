@@ -5,6 +5,7 @@ from flask.ext.cache import Cache
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.cors import CORS
 from flask.ext.mail import Mail, Message
+from celery import Celery
 
 
 app = Flask(__name__)

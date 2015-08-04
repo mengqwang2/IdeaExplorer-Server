@@ -10,13 +10,15 @@ import sys
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
-import register,login,docList,docDetail,rate,comment,docRecommend,category
+import register,login,docList,docDetail,rate,comment,docRecommend,category,sorter
 from models import *
 from IdeaExplorer import cache
 from flask import current_app, flash, Blueprint, request, redirect, render_template, url_for
 from flask.ext.login import (current_user, login_required, login_user, logout_user, confirm_login, fresh_login_required)
 import flask
 import urllib
+from operator import itemgetter
+from collections import deque
 
 
 api = Api(app)
@@ -182,9 +184,13 @@ class DetailAPI(Resource):
         data["id"]=postid
         #Write user preference
         uo=UserProfile.objects.get_or_404(email=email)
-        docList=uo.doc
+        docList=deque(uo.doc)
         if postid not in docList:
-            uo.doc.append(postid)
+            docList.append(postid)
+            if(len(docList)>5):
+                docList.popleft()
+            docList=list(docList)
+            uo.doc=docList
             uo.save()
 
         return data
@@ -230,10 +236,19 @@ class QueryAPI(Resource):
 
         super(QueryAPI, self).__init__()
 
-    @cache.cached(timeout=250,key_prefix=cache_key)
-    def retrieveIdeaList(self,kwList):
+    def retrieveIdeaList(self,kwList,criteria,filt):
         dl=docList.DocList(kwList=kwList)
         dlist=dl.doRetrieveDoc()
+
+        #filter
+
+        #sort
+        sortObj=sorter.Sorter(criteria,dlist)
+        sortObj.doSort()
+        dlist=sortObj.getList()
+
+ 
+
         data=list()
         
         for d in dlist:
@@ -250,10 +265,12 @@ class QueryAPI(Resource):
             data.append(d_detail)
         return data
 
-    def get(self, queries, sind, capacity):
+    def get(self, queries, sind, capacity, sorter):
         print "QueryAPI"
         kwList=queries.split("&")
-        data=self.retrieveIdeaList(kwList)
+        data=self.retrieveIdeaList(kwList,sorter,"all")
+
+
         ideasDict={}
 
         size=len(data)
@@ -315,7 +332,7 @@ class RatingPostAPI(Resource):
         print msg
         if(msg=="Rate successfully!"):
             return 201
-        return 203
+        return 450
 
 #average and individual rating
 class RatingGetAPI(Resource):
@@ -326,8 +343,7 @@ class RatingGetAPI(Resource):
         return {'rating': rt};
 
 class CommentGetAPI(Resource):
-    #decorators = [auth.login_required]
-
+    decorators = [auth.login_required]
     def get(self,postid):
         comObj=comment.Comment(postid)
         comList=comObj.commentGet()
@@ -335,9 +351,7 @@ class CommentGetAPI(Resource):
 
 
 class CommentPostAPI(Resource):
-
-    #decorators = [auth.login_required]
-    
+    decorators = [auth.login_required]
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('Email', type=str, required=True,
@@ -354,7 +368,7 @@ class CommentPostAPI(Resource):
 
 
     def post(self):
-        print "Enter the comment API"
+        print "Comment API"
         args = self.reqparse.parse_args()
         email=args["Email"]
         content=args["Content"]
@@ -366,9 +380,10 @@ class CommentPostAPI(Resource):
             if (msg=="Comment successfully!"):
                 comList=comObj.commentGet()
                 return {'Comment': comList},201
-            return 203
+            return 450
         except:
-            return 203
+            raise sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]
+            return 450
 
 class UserRegAPI(Resource):
     def __init__(self):
@@ -395,7 +410,7 @@ class UserRegAPI(Resource):
         msg=reg.doRegister()
         if (msg=="Register successfully!"):
             return {"state": msg},201
-        return {"state":msg},203
+        return {"state":msg},450
         
 
 class UserAuthAPI(Resource):
@@ -415,20 +430,21 @@ class UserAuthAPI(Resource):
         l=login.Login(args['Email'],args['Password'])
         msg=l.doLogin()
         if (msg=="Login successfully"):
+            name=l.getName()
             logging.warning("Login successfully")
             currentID = Utility.generate_auth_token(args)
             currentID = currentID.decode('ascii')
-            return {'Token':currentID, "state":msg}, 201
+            return {'Token':currentID, "state":msg, "name":name}, 201
         else:
             logging.warning("Login failed")
-            return {"state":msg},203
+            return {"state":msg},450
 
 api.add_resource(IdeaAPI, '/api/ideas/id=<string:email>&start=<int:sind>&cap=<int:capacity>')
 api.add_resource(SimilarAPI, '/api/ideas/relevant/<int:postid>')
 api.add_resource(CategoryAPI, '/api/category')
 api.add_resource(UserAuthAPI, '/api/login')
 api.add_resource(PasswordRecoveryAPI, '/api/login/forget')
-api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>')
+api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>&sort=<string:sorter>')
 api.add_resource(UserRegAPI, '/api/reg')
 api.add_resource(CommentGetAPI, '/api/ideas/comment/<int:postid>')
 api.add_resource(CommentPostAPI, '/api/ideas/comment')

@@ -54,5 +54,8 @@ class DocList(MethodView):
 		dr=docRecommend.DocRecommend(docList,5)
 		d2=dr.doRecommend()
 
-		recSet=d1.union(d2)
-		return recSet
+		recList=list()
+		d2=list(d2)
+		recList=d1+d2
+
+		return recList
