@@ -1,5 +1,10 @@
 from operator import itemgetter
 from collections import deque
+import os,sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import models
+from models import *
+
 
 class Sorter():
     def __init__(self,sorter,dlist):

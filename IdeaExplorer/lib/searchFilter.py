@@ -39,6 +39,5 @@ class Filter():
 			if(int(cur)>dateStr):
 				filterList.append(ele)
 
-		#print filterList
 		return filterList
 

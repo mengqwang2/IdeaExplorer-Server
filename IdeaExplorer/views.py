@@ -6,10 +6,8 @@ from jinja2 import TemplateNotFound
 from IdeaExplorer import login_manager,flask_bcrypt,flask_mail
 import forms
 from hashlib import md5
-import sys
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
+import os,sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models import *
 import DBSim,DBGamma,DBLambda,DBVocab
 import category, docRecommend, keywordSearch, category
@@ -257,6 +255,7 @@ class LoginView(MethodView):
         #dlist=[2015003020,2015003021,2015002673]
         #sf=searchFilter.Filter("6months",dlist)
         #sf.doFilter()
+
 
         return render_template("posts/login.html")
 

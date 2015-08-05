@@ -6,10 +6,8 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
 from flask.ext.httpauth import HTTPBasicAuth
 import logging
 from flask import request, jsonify
-import sys
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
+import os,sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import register,login,docList,docDetail,rate,comment,docRecommend,category,sorter,searchFilter,interestManage
 from models import *
 from IdeaExplorer import cache
@@ -25,12 +23,22 @@ api = Api(app)
 auth = HTTPBasicAuth()
 
 def cache_key():
-    args = flask.request.args
-    key1 = flask.request.path
-    keyList = key1.split("&")
-    print keyList[0]
+    args=flask.request.args
+    key1=flask.request.path
+    keyList=key1.split("&")
     return keyList[0]
 
+def cache_key_index():
+    args=flask.request.args
+    key1=flask.request.path
+    keyList=key1.split("&")
+    return keyList[0]+keyList[1]
+
+def cache_key_query():
+    args=flask.request.args
+    key1=flask.request.path
+    keyList=key1.split("&")
+    return keyList[0]+keyList[1]+keyList[2]
 
 class Utility:
     @staticmethod
@@ -71,31 +79,10 @@ def verify_password(username_or_token, password):
     return True
 
 
-class UserHabitAPI(Resource):
-
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser() 
-        self.reqparse.add_argument('Postid', type=int, required=True,
-                               help='Id required',
-                               location='json')
-        self.reqparse.add_argument('Email', type=str, required=True,
-                                   help='Email required',
-                                   location='json')
-        super(UserHabitAPI, self).__init__()
-    
-
-    def post(self):
-        print "UserHabitAPI"
-        args = self.reqparse.parse_args()
-        logging.warning("Habit received")
-        success = True
-        
-        return {'success': success}, 201
-
-
 class IdeaAPI(Resource):
     decorators = [auth.login_required]
 
+    @cache.cached(timeout=100,key_prefix=cache_key_index)
     def retrieveIdeaList(self,email):
         userObj=UserProfile.objects.get_or_404(email=email)
         dl=docList.DocList(userObj=userObj)
@@ -116,7 +103,7 @@ class IdeaAPI(Resource):
             data.append(d_detail)
         return data
 
-    def get(self, email, sind, capacity):
+    def get(self, email, ca, sind, capacity):
         print "IdeaAPI"
         self.email=email
         data=self.retrieveIdeaList(email)
@@ -215,10 +202,11 @@ class QueryAPI(Resource):
 
         super(QueryAPI, self).__init__()
 
+    @cache.cached(timeout=350,key_prefix=cache_key_query)
     def retrieveIdeaList(self,kwList,criteria,filt):
         dl=docList.DocList(kwList=kwList)
         dlist=dl.doRetrieveDoc()
-
+        #print dlist
         #filter
         sf=searchFilter.Filter(filt,dlist)
         dlist=sf.doFilter()
@@ -227,7 +215,6 @@ class QueryAPI(Resource):
         sortObj=sorter.Sorter(criteria,dlist)
         sortObj.doSort()
         dlist=sortObj.getList()
-        print dlist
 
         data=list()
         
@@ -238,7 +225,6 @@ class QueryAPI(Resource):
             d_detail["id"]=d
             dd=docDetail.DocDetail(d)
             d_detail["title"]=dd.getTitle()
-            print d_detail["title"]
             d_detail["description"]=dd.getDescription()
             d_detail["tags"]=dd.getTags()
             d_detail["rating"]=rt
@@ -248,7 +234,7 @@ class QueryAPI(Resource):
 
     def get(self,email,queries,sind,capacity,sorter,filt):
         print "QueryAPI"
-        kwList=queries.split("&")
+        kwList=queries.split("%")
 
         #record keyword interest
         up=UserProfile.objects.get_or_404(email=email)
@@ -260,8 +246,9 @@ class QueryAPI(Resource):
 
         up.keyword=oldlist
         up.save()
-
+        
         data=self.retrieveIdeaList(kwList,sorter,filt)
+        #print data
 
         ideasDict={}
 
@@ -446,11 +433,11 @@ class UserHabitAPI(Resource):
 
 
 
-api.add_resource(IdeaAPI, '/api/ideas/id=<string:email>&start=<int:sind>&cap=<int:capacity>')
+api.add_resource(IdeaAPI, '/api/ideas/id=<string:email>&ca=<int:ca>&start=<int:sind>&cap=<int:capacity>')
 api.add_resource(SimilarAPI, '/api/ideas/relevant/<int:postid>')
 api.add_resource(CategoryAPI, '/api/category')
 api.add_resource(UserAuthAPI, '/api/login')
-api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>&sort=<string:sorter>&filt=<string:filt>&email=<string:email>')
+api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&sort=<string:sorter>&filt=<string:filt>&start=<int:sind>&cap=<int:capacity>&email=<string:email>')
 api.add_resource(UserRegAPI, '/api/reg')
 api.add_resource(CommentGetAPI, '/api/ideas/comment/<int:postid>')
 api.add_resource(CommentPostAPI, '/api/ideas/comment')

@@ -2,10 +2,8 @@ import os,sys,operator
 import dataParse
 from flask import current_app, flash, Blueprint, request, redirect, render_template, url_for
 from flask.views import MethodView
-import sys
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
+import os,sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import models
 from models import *
 from flask.ext.mongoengine.wtf import model_form
