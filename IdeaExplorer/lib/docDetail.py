@@ -38,7 +38,7 @@ class DocDetail(MethodView):
 		return wordList
 
 	def getUpdatedDate(self):
-		return self.ideaObj.updated_date
+		return self.ideaObj.submit_date
 
 	def getRelevance(self):
 		return self.ideaObj.relevance_to_challenge

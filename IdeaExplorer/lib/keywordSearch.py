@@ -75,6 +75,15 @@ class KeywordSearch():
 		docList=list()
 		if len(self.__keyword)==0:
 			return docList
+
+		kw_updated=[]
+
+		for ele in self.__vocab:
+			if(ele.word in self.__keyword):
+				if(ele.word not in kw_updated):
+					kw_updated.append(ele.word)
+		self.__keyword=kw_updated
+
 		topic_id=self.topicSearch()
 		document_id=self.documentSearch(topic_id)
 		d=self.tagSearch()

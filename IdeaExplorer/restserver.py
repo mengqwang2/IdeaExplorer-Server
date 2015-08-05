@@ -10,7 +10,7 @@ import sys
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
 sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
-import register,login,docList,docDetail,rate,comment,docRecommend,category,sorter,searchFilter
+import register,login,docList,docDetail,rate,comment,docRecommend,category,sorter,searchFilter,interestManage
 from models import *
 from IdeaExplorer import cache
 from flask import current_app, flash, Blueprint, request, redirect, render_template, url_for
@@ -71,26 +71,6 @@ def verify_password(username_or_token, password):
     return True
 
 
-class PasswordRecoveryAPI(Resource):
-
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser() #Basic mail format has been checked
-        self.reqparse.add_argument('Email', type=str, required=True,
-                               help='Email required',
-                               location='json')
-    
-        super(PasswordRecoveryAPI, self).__init__()
-
-    
-
-    def post(self):
-        print "PasswordRecoveryAPI"
-        args = self.reqparse.parse_args()
-#check with the database
-        success = True
-        
-        return {'success': success}, 201
-
 class UserHabitAPI(Resource):
 
     def __init__(self):
@@ -116,7 +96,6 @@ class UserHabitAPI(Resource):
 class IdeaAPI(Resource):
     decorators = [auth.login_required]
 
-    @cache.cached(timeout=250,key_prefix=cache_key)
     def retrieveIdeaList(self,email):
         userObj=UserProfile.objects.get_or_404(email=email)
         dl=docList.DocList(userObj=userObj)
@@ -243,16 +222,13 @@ class QueryAPI(Resource):
         #filter
         sf=searchFilter.Filter(filt,dlist)
         dlist=sf.doFilter()
-        #print dlist
-
 
         #sort
         sortObj=sorter.Sorter(criteria,dlist)
         sortObj.doSort()
         dlist=sortObj.getList()
-
         print dlist
-        
+
         data=list()
         
         for d in dlist:
@@ -262,6 +238,7 @@ class QueryAPI(Resource):
             d_detail["id"]=d
             dd=docDetail.DocDetail(d)
             d_detail["title"]=dd.getTitle()
+            print d_detail["title"]
             d_detail["description"]=dd.getDescription()
             d_detail["tags"]=dd.getTags()
             d_detail["rating"]=rt
@@ -269,9 +246,21 @@ class QueryAPI(Resource):
             data.append(d_detail)
         return data
 
-    def get(self, queries, sind, capacity, sorter,filt):
+    def get(self,email,queries,sind,capacity,sorter,filt):
         print "QueryAPI"
         kwList=queries.split("&")
+
+        #record keyword interest
+        up=UserProfile.objects.get_or_404(email=email)
+        oldlist=up.keyword
+
+        for ele in kwList:
+            if ele not in oldlist:
+                oldlist.append(ele)
+
+        up.keyword=oldlist
+        up.save()
+
         data=self.retrieveIdeaList(kwList,sorter,filt)
 
         ideasDict={}
@@ -442,16 +431,30 @@ class UserAuthAPI(Resource):
             logging.warning("Login failed")
             return {"state":msg},450
 
+class UserHabitAPI(Resource):
+    def get(self,email,kw):
+        im=interestManage.InterestManage(email=email)
+        return im.interestGet()
+
+    def delete(self,email,kw):
+        im=interestManage.InterestManage(email=email,kw=kw)
+        msg=im.interestDelete()
+        if(msg=="Delete successfully" or msg=="No deletion executed"):
+            return 201
+        else:
+            return 450
+
+
+
 api.add_resource(IdeaAPI, '/api/ideas/id=<string:email>&start=<int:sind>&cap=<int:capacity>')
 api.add_resource(SimilarAPI, '/api/ideas/relevant/<int:postid>')
 api.add_resource(CategoryAPI, '/api/category')
 api.add_resource(UserAuthAPI, '/api/login')
-api.add_resource(PasswordRecoveryAPI, '/api/login/forget')
-api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>&sort=<string:sorter>&filt=<string:filt>')
+api.add_resource(QueryAPI, '/api/ideas/query=<string:queries>&start=<int:sind>&cap=<int:capacity>&sort=<string:sorter>&filt=<string:filt>&email=<string:email>')
 api.add_resource(UserRegAPI, '/api/reg')
 api.add_resource(CommentGetAPI, '/api/ideas/comment/<int:postid>')
 api.add_resource(CommentPostAPI, '/api/ideas/comment')
 api.add_resource(RatingPostAPI, '/api/ideas/rating')
 api.add_resource(RatingGetAPI, '/api/ideas/rating/<int:postid>/<string:email>')
-api.add_resource(UserHabitAPI, '/api/user/habit')
+api.add_resource(UserHabitAPI, '/api/user/interest/email=<string:email>&interest=<string:kw>')
 api.add_resource(DetailAPI, '/api/ideas/details/<int:postid>&<string:email>')

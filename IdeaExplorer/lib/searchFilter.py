@@ -34,7 +34,7 @@ class Filter():
 		filterList=[]
 		for ele in self.__dlist:
 			idea=Ideas.objects.get_or_404(id=ele)
-			dat=str(idea.updated_date[0:10])
+			dat=str(idea.submit_date)[0:10]
 			cur=dat[0:4]+dat[5:7]+dat[8:10]
 			if(int(cur)>dateStr):
 				filterList.append(ele)
