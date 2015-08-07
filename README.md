@@ -1,5 +1,7 @@
 # IdeaExplorer-Server
-IdeaExplorer is an intelligent mobile platform for idea collaboration in EMC. Users can browse the innovations through a simple search and further provide their comments and ratings for each innovation on the platform. The platform is smart in that it can automatically recommend relevant innovations to the users according to users' preference and browsing history. This repository is created for the server implementation while there is another repository for the front-end ionic implementation.
+IdeaExplorer is an intelligent mobile platform for idea collaboration in EMC. Users can browse the innovations through a simple keyword search and further provide their comments and ratings for each innovation on the platform. The platform is smart in that it reduces the dimension of innovation documents so that words can be mapped to documents in the statistical manner. It can further automatically recommend relevant innovations to the users according to users' preference and browsing history. 
+
+This repository is created for the server implementation while there is another repository for the front-end ionic implementation.
 
 
 
