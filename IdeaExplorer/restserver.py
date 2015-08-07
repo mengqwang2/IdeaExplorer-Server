@@ -82,7 +82,7 @@ def verify_password(username_or_token, password):
 class IdeaAPI(Resource):
     decorators = [auth.login_required]
 
-    @cache.cached(timeout=100,key_prefix=cache_key_index)
+    @cache.cached(timeout=500,key_prefix=cache_key_index)
     def retrieveIdeaList(self,email):
         userObj=UserProfile.objects.get_or_404(email=email)
         dl=docList.DocList(userObj=userObj)
@@ -232,9 +232,10 @@ class QueryAPI(Resource):
             data.append(d_detail)
         return data
 
-    def get(self,email,queries,sind,capacity,sorter,filt):
+    def get(self,queries,sorter,filt,sind,capacity,email):
         print "QueryAPI"
         kwList=queries.split("%")
+        print kwList
 
         #record keyword interest
         up=UserProfile.objects.get_or_404(email=email)

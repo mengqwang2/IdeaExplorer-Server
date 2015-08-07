@@ -76,6 +76,10 @@ class KeywordSearch():
 
 		kw_updated=[]
 
+		d=self.tagSearch()
+		for ele in d:
+			docList.append(ele)
+
 		for ele in self.__vocab:
 			if(ele.word in self.__keyword):
 				if(ele.word not in kw_updated):
@@ -86,9 +90,7 @@ class KeywordSearch():
 
 		topic_id=self.topicSearch()
 		document_id=self.documentSearch(topic_id)
-		d=self.tagSearch()
-		for ele in d:
-			docList.append(ele)
+		
 		for ele in document_id:
 			if ele not in docList:
 				docList.append(ele)
