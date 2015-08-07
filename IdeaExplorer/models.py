@@ -2,12 +2,13 @@ import datetime
 from flask import url_for
 from IdeaExplorer import db
 
+#Embedded field for the innovator field in Table <Ideas>
 class Innovator(db.EmbeddedDocument):
     badge_no=db.IntField(required=True)
     name=db.StringField(max_length=255, required=True)
     email=db.EmailField(max_length=255, required=True)
 
-
+#Table Ideas
 class Ideas(db.DynamicDocument):
     updated_date=db.DateTimeField(default=datetime.datetime.now, required=True)
     likes=db.BooleanField(default=False)
@@ -35,7 +36,7 @@ class Ideas(db.DynamicDocument):
     comments_count=db.IntField(required=True)
     submitter=db.EmailField(max_length=255, required=True)
 
-
+#Table Users for login to the mobile platform
 class UserProfile(db.DynamicDocument):
     email=db.EmailField(max_length=255, required=True)
     badgeid=db.StringField(max_length=255, required=True)
@@ -52,16 +53,19 @@ class UserProfile(db.DynamicDocument):
         ]
     }
 
+#Embedded field for Table <UserPost> record
 class Comment(db.EmbeddedDocument):
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     content = db.StringField(required=True)
     user = db.ReferenceField('UserProfile',required=True)
 
+#Embedded field for Table <UserPost> record
 class Rate(db.EmbeddedDocument):
     create_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     rating = db.IntField(required=True)
     user = db.ReferenceField('UserProfile',required=True)
 
+#Table for writting down user posts
 class UserPost(db.DynamicDocument):
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     docid = db.IntField(required=True)
@@ -84,42 +88,52 @@ class UserPost(db.DynamicDocument):
         'ordering': ['docid']
     }
 
+#Table for Document-Tags 
 class DocTag(db.DynamicDocument):
     docid = db.IntField(required=True)
     tags = db.ListField(db.StringField(max_length=255))
 
+#Table for Tag-Documents
 class TagDoc(db.DynamicDocument):
     tag = db.StringField(max_length=255)
     docid = db.ListField(db.IntField(required=True))
 
+#Table for LDA Gamma - Document-Gamma
 class GammaDT(db.DynamicDocument):
     docid=db.IntField(required=True)
     gamma=db.ListField(db.FloatField(required=True))
 
+#Embedded field for GammaTD below
 class DocGamma(db.EmbeddedDocument):
     docid=db.IntField(required=True)
     gamma=db.FloatField(required=True)
 
+#Table for LDA Gamma - Topic-Gamma 
 class GammaTD(db.DynamicDocument):
     topicid=db.IntField(required=True)
     gam=db.ListField(db.EmbeddedDocumentField('DocGamma'))
 
+#Embedded field for DocSim
 class Similarity(db.DynamicDocument):
     docid=db.IntField(required=True)
     sim=db.FloatField(required=True)
 
+#Table for Inter-document Similarity
 class DocSim(db.DynamicDocument):
     docid=db.IntField(required=True)
     similarity=db.ListField(db.EmbeddedDocumentField('Similarity'))
 
+#Table for LDA Lambda - Topic-Lambda
 class LambdaTW(db.DynamicDocument):
     topicid=db.IntField(required=True)
     lam=db.ListField(db.FloatField(required=True))
 
+#Table for LDA Lambda - Word-Lambda
 class LambdaWT(db.DynamicDocument):
     wordid=db.IntField(required=True)
     lam=db.ListField(db.FloatField(required=True))
 
+#Table for LDA dictionary
 class Vocab(db.DynamicDocument):
     vid=db.IntField(required=True)
     word=db.StringField(max_length=255, required=True)

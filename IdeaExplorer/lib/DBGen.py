@@ -51,16 +51,6 @@ class DBGen():
         for g in gammaObj:
             gammaDict[g.docid]=g.gamma
 
-        #Update table <DocGamma>
-        gammaObj=DBGamma.DBGamma("../data/gamma.dat")
-        gammaDict=gammaObj.gamma()
-
-        for k,v in gammaDict.iteritems():
-            go=DocGamma()
-            go.docid=int(k)
-            go.gamma=v
-            go.save()
-
         
         #Update table <DocSim>, <Similarity>
         sim=DBSim.DBSim(gammaDict)
