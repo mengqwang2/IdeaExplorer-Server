@@ -1,8 +1,13 @@
 # IdeaExplorer-Server
 IdeaExplorer is an intelligent mobile platform for idea collaboration in EMC. Users can browse the innovations through a simple keyword search and further provide their comments and ratings for each innovation on the platform. The platform is smart in that it reduces the dimension of innovation documents so that words can be mapped to documents in the statistical manner. It can further automatically recommend relevant innovations to the users according to users' preference and browsing history. 
 
-This repository is created for the server implementation while there is another repository for the front-end ionic implementation.
+Checking out the full demo of this amazing application here: https://www.youtube.com/watch?v=14AU8FYZVO8
 
+
+We shot this video when we delopyed the application as a micro-service on Rasperry Pi and won the runner-up in the EMC Pi Hackathon.
+
+
+This repository is created for the server implementation while there is another repository for the front-end ionic implementation.
 
 
 # Server Installation
