@@ -3,7 +3,7 @@ import os,sys
 class DBTag():
 	def doctag(self):
 		doc_tag_list=dict()
-		with open("data/tag1.txt","r+") as f:
+		with open("../data/tag.txt","r+") as f:
 			for line in f:
 				tagList=line.split()
 				if tagList[0] not in doc_tag_list:
@@ -16,7 +16,7 @@ class DBTag():
 
 	def tagdoc(self):
 		tag_doc_list=dict()
-		with open("data/tag1.txt","r+") as f:
+		with open("../data/tag.txt","r+") as f:
 			for line in f:
 				doc_tag=line.split()
 				for tag1 in doc_tag[1:]:
