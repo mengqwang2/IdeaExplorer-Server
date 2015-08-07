@@ -1,16 +1,17 @@
 # IdeaExplorer-Server
 
 # Server Installation
-Configure DB:
+Configure DB
 --------------
 Clone all the data from the original test DB server
 
 
-Configure Web Server:
+Configure Web Server
 --------------
+
 __init__.py
 
-- app.config["MONGODB_HOST"] = <DB server IP>
+- app.config["MONGODB_HOST"] = DB server IP
 - app.config["MONGODB_PORT"] = 27017
 - app.config["MONGODB_DB"] = "tumblelog"
 
