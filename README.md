@@ -1,19 +1,22 @@
 # IdeaExplorer-Server
 
 # Server Installation
-1. Configure DB:
+Configure DB:
+--------------
 Clone all the data from the original test DB server
 
 
-2. Configure Web Server:
+Configure Web Server:
+--------------
 __init__.py
 
-app.config["MONGODB_HOST"] = <DB server IP>
-app.config["MONGODB_PORT"] = 27017
-app.config["MONGODB_DB"] = "tumblelog"
+- app.config["MONGODB_HOST"] = <DB server IP>
+- app.config["MONGODB_PORT"] = 27017
+- app.config["MONGODB_DB"] = "tumblelog"
 
 
-3. Try http://localhost:5000 for the prototype
+Try http://localhost:5000 for the prototype
+--------------
 Port 5000 has all the functionalities that the mobile app has for testing
 
 
