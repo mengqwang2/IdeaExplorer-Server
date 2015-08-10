@@ -1,5 +1,4 @@
 import json
-import os
 
 class jsonParser():
 	def __init__(self,filePath):
