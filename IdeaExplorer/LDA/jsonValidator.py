@@ -8,4 +8,4 @@ class JsonValidator():
 
 	def doUnicode(self):
 		with io.open("../data/ideas_utf8.txt", 'w', encoding='utf-8') as f:
-			f.write(unicode(json.dumps(data, ensure_ascii=False)))
+			f.write(unicode(json.dumps(self.__data, ensure_ascii=False)))
