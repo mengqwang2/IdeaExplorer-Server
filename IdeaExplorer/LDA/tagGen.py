@@ -1,6 +1,4 @@
 import dataParse
-import numpy
-import os,sys
 
 class TagGen():
     def __init__(self,docNum,fp):
