@@ -1,7 +1,6 @@
 import cPickle, string, numpy, getopt, sys, random, time, re, pprint
 import dataParse
 import onlineldavb
-import wikirandom
 
 class IdeaLDA():
     def __init__(self,batchsize,d,k,tau,kappa):
