@@ -31,24 +31,24 @@ class IdeaLDA():
 
 
     def runLDA(self):
-        # Run until we've seen D documents. (Feel free to interrupt *much* sooner than this.)
         for iteration in range(0, self.__documentstoanalyze):
             #Retrieve texts
             docset=self.__des[iteration*self.__batchsize:iteration*self.__batchsize+self.__batchsize]
+            
             # Give them to online LDA
-        
             (gamma, bound) = self.__ldaObj.update_lambda(docset)
+            
+            '''
             # Compute an estimate of held-out perplexity
             (wordids, wordcts) = onlineldavb.parse_doc_list(docset, self.__ldaObj._vocab)
-            perwordbound = bound * len(docset) / (D * sum(map(sum, wordcts)))
+            perwordbound = bound * len(docset) / (self.__documentstoanalyze * sum(map(sum, wordcts)))
             print '%d:  rho_t = %f,  held-out perplexity estimate = %f' % \
             (iteration, self.__ldaObj._rhot, numpy.exp(-perwordbound))
-
-            # Save lambda, the parameters to the variational distributions
-            # over topics, and gamma, the parameters to the variational
-            # distributions over topic weights for the articles analyzed in
-            # the last iteration.
+            '''
         
+           # Save a temporary lambda for this iteration
+            temp_lambda = self.__ldaObj._lambda
+
            # Save a temporary lambda for this iteration
             temp_lambda = self.__ldaObj._lambda
 
