@@ -1,8 +1,9 @@
 import dataParse
+import os
 
 class TagGen():
-    def __init__(self,docNum,fp):
-        self.__dp=dataParse.dataParse(fp)
+    def __init__(self,docNum):
+        self.__dp=dataParse.dataParse(os.path.abspath("./data/ideas.txt"))
         self.__docNum=docNum
         self.__tags=self.__dp.fieldParse("tags")
         
@@ -17,7 +18,7 @@ class TagGen():
         return " ".join(wordlist)
 
     def generateAllTags(self):
-        f2 = open("../../data/tag.txt","w+")
+        f2 = open("./data/tag.txt","w+")
         for k,v in self.__tags.iteritems():
             if v=="":
                 v="na"
