@@ -33,7 +33,7 @@ class IdeaLDA():
     def runLDA(self):
         for iteration in range(0, self.__documentstoanalyze):
             #Retrieve texts
-            docset=self.__des[iteration*self.__batchsize:iteration*self.__batchsize+self.__batchsize]
+            docset=self.__doc[iteration*self.__batchsize:iteration*self.__batchsize+self.__batchsize]
             
             # Give them to online LDA
             (gamma, bound) = self.__ldaObj.update_lambda(docset)
