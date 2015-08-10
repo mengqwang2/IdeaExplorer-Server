@@ -1,5 +1,7 @@
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))+'/IdeaExplorer/DbUpdate')
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))+'/IdeaExplorer/lib')
 import models
 from flask.ext.mongoengine.wtf import model_form
 from wtforms.fields import *
