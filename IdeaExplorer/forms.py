@@ -1,7 +1,5 @@
 import sys
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/DBUpdate')
-sys.path.append('/Users/mengqwang/Documents/IdeaExplorer/Idea-Server/IdeaExplorer/lib')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import models
 from flask.ext.mongoengine.wtf import model_form
 from wtforms.fields import *
