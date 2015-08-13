@@ -38,11 +38,15 @@ The database design is illustrated as schemas in models.py
 
 #Install guide
 Mongo DB and flask need to be installed as well as ionic to run the App.
+
 Run CreateData.py then DBGen to get data generated and stored in Mongo DB. 
+
 Run __init__.py to start a server and  http://localhost:5000 can be viewed. With ionic, the page of appplication can be viewed directly.
 
 #To do list
 The ionic App is the latest version, however, the page of http://localhost:5000 has not been updated and is still an old version.
+
 The parameters used in the algorithm may be modified to attain a better result. For detail, see the readme.txt in LDA.
 An adminster page can be set up to overview the whole information of data. 
+
 After collecting the data of users' behaviour, more functions could be generated to analyse. 
