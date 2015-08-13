@@ -303,7 +303,7 @@ class SearchView(MethodView):
         userObj=UserProfile.objects.all()
         ideaObj=Ideas.objects.all()
 
-        ks=keywordSearch.KeywordSearch(kwList)
+        ks=keywordSearch.KeywordSearch(kwList,5)
         
         docList=ks.doSearch()
 
