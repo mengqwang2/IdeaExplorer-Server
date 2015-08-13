@@ -44,9 +44,12 @@ Run CreateData.py then DBGen to get data generated and stored in Mongo DB.
 Run __init__.py to start a server and  http://localhost:5000 can be viewed. With ionic, the page of appplication can be viewed directly.
 
 #To do list
-The ionic App is the latest version, however, the page of http://localhost:5000 has not been updated and is still an old version.
+The ionic App is the latest version, however, the page of http://localhost:5000 has not been updated and is still an old version. It needs to be updated if one wants to view the webpage without ionic.
 
 The parameters used in the algorithm may be modified to attain a better result. For detail, see the readme.txt in LDA.
+
 An adminster page can be set up to overview the whole information of data. 
 
-After collecting the data of users' behaviour, more functions could be generated to analyse. 
+After collecting the data of users' behaviour, more functions could be generated to make forther analysis. 
+
+The present database cannot be updated automatically. Celery may be used to make the database updated everyday and automatically.
