@@ -37,7 +37,7 @@ flask_bcrypt = Bcrypt(app)
 
 
 def register_blueprints(app):
-    # Prevents circular imports
+    # Prevents circular import (May be not helpful)#
     from IdeaExplorer.views import posts
     app.register_blueprint(posts)
 
