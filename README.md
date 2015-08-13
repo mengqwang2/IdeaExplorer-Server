@@ -37,9 +37,9 @@ The Topic Modeling algorithm is based on the online LDA proposed by M. Hoffman. 
 The database design is illustrated as schemas in models.py
 
 #Install guide
-Mongo DB and flask need to be installed as well as ionic to run the App.
+Mongo DB, ionic and flask needs to be installed. 
 
-Run CreateData.py to create some result stored in IdeaExplorer/Data.(Train the model) Then run DBGen.py to get some other data generated and stored in Mongo DB. The latter one may take a long time. (depends on the size of data, might take more than an hour) 
+Run CreateData.py to create some results stored in IdeaExplorer/Data.(Train the model) Then run DBGen.py to get some other data generated and stored all of them in Mongo DB. The latter one may take a long time. (depends on the size of data, might take more than an hour) 
 
 Run __init__.py to start a server and http://localhost:5000 can be viewed. The front-end ionic also can be viewed.
 
@@ -48,8 +48,8 @@ The ionic App is the latest version, however, the page of web server has not bee
 
 The parameters used in the algorithm may be modified to attain a better result. For detail, see the readme.txt in LDA.
 
-An adminster page can be set up to overview the whole information of data. 
+An adminster page can be written to get an overview of the whole information of data. 
 
-After collecting the data of users' behaviour, more functions could be generated to make forther analysis. 
+After collecting the data of users' behaviour, more functions could be generated to make further analysis. 
 
 The present database cannot be updated automatically. Celery may be used to make the database updated everyday and automatically.
