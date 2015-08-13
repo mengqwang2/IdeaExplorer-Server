@@ -39,7 +39,7 @@ The database design is illustrated as schemas in models.py
 #Install guide
 Mongo DB and flask need to be installed as well as ionic to run the App.
 
-Run CreateData.py then DBGen to get data generated and stored in Mongo DB. 
+Run CreateData.py then DBGen.py to get data generated and stored in Mongo DB. 
 
 Run __init__.py to start a server and  http://localhost:5000 can be viewed. With ionic, the page of appplication can be viewed directly.
 
