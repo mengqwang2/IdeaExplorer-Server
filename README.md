@@ -37,9 +37,9 @@ The Topic Modeling algorithm is based on the online LDA proposed by M. Hoffman. 
 The database design is illustrated as schemas in models.py
 
 #Install guide
-Mongo DB, ionic and flask needs to be installed. 
+Mongo DB, ionic and flask need to be installed. 
 
-Run CreateData.py to create some results stored in IdeaExplorer/Data.(Train the model) Then run DBGen.py to get some other data generated and stored all of them in Mongo DB. The latter one may take a long time. (depends on the size of data, might take more than an hour) 
+Run CreateData.py to create part of results stored in IdeaExplorer/Data.(Train the model) Then run DBGen.py to get some other data generated and all the data will be stored in Mongo DB. The latter one may take a long time. (depends on the size of data, might take more than an hour) 
 
 Run __init__.py to start a server and http://localhost:5000 can be viewed. The front-end ionic also can be viewed.
 
